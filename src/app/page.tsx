@@ -1,113 +1,239 @@
+import Navbar from '@/components/Navbar'
+import ProductSlider from '@/components/ProductSlider'
 import Image from 'next/image'
+// import { Button } from "@/components/ui/button"
+import { Input } from '@/components/ui/input'
+import Link from 'next/link'
+import Footer from '@/components/Footer'
+import Layout from '@/components/Layout'
+import { client } from '../../sanity/lib/client'
 
-export default function Home() {
+const getProductData = async ()=>{
+   let data = await client.fetch(`*[_type=="product"] {
+    image,
+    price ,
+    _id,
+    title,
+    description,
+    productCategory -> {
+      _id,
+      category
+    },
+    subCategory->{
+      suitcategory,
+      _id
+    }
+   }`)
+   return data
+}
+
+export default async function Home() {
+
+  let productResp = await getProductData()
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
+    <Layout>
+      {/* <Navbar /> */}
+      {/* hero section  */}
+      <div className="flex items-center justify-center gap-x-10">
+        <div className="w-1/2">
+          <div className="py-2 px-6 bg-blue-100 rounded-md w-fit">
+            <p className="font-bold text-blue-600">Sale 70%</p>
+          </div>
+          <h1 className="mt-5 text-6xl font-bold">
+            An Industrial Take on Streetwear
+          </h1>
+          <p className="mt-8 w-[60%] ">
+            Anyone can beat you but no one can beat your outfit as long as you
+            wear Dine outfits.
+          </p>
+          <button className="flex items-center gap-x-2 bg-black py-3 px-10 rounded-md mt-12 text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-shopping-cart"
+            >
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+            </svg>
+            <p>Start Shopping</p>
+          </button>
+          <div className="mt-6 flex items-center gap-x-5">
+            <Image src={'/Featured1.webp'} width={100} height={50} alt="logo" />
+            <Image src={'/Featured2.webp'} width={100} height={50} alt="logo" />
+            <Image src={'/Featured3.webp'} width={100} height={50} alt="logo" />
+            <Image src={'/Featured4.webp'} width={100} height={50} alt="logo" />
+          </div>
+        </div>
+        <div className="w-1/2">
+          <div className="w-[500px] h-[500px] rounded-full bg-pink-200">
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+              src={'/hero-image.webp'}
+              width={500}
+              height={500}
+              alt="hero"
+              className="w-[700px] h-[550px] -top-8 relative"
             />
-          </a>
+          </div>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      {/* promotions  */}
+      <div className="mt-20">
+        <p className="text-center text-blue-600 font-bold text-sm uppercase">
+          Promotions
+        </p>
+        <h2 className="text-4xl font-bold mt-3 text-center">
+          Our Promotions Events
+        </h2>
+        <div className="flex gap-x-5 mt-10 justify-center">
+          <div className="w-[50%]">
+            <div className="flex items-center bg-gray-300 pt-2 px-5 w-full">
+              <div>
+                <h2 className="text-3xl font-bold">GET UP TO 60%</h2>
+                <p className="text-lg mt-2">For the summer season</p>
+              </div>
+              <Image src={'/event1.webp'} width={250} height={70} alt="event" />
+            </div>
+            <div className="bg-zinc-800 w-full mt-4 pt-10 pb-3 px-3 text-center text-white">
+              <h2 className="text-3xl font-bold">GET UP TO 60%</h2>
+              <p className="text-lg mt-2">For the summer season</p>
+              <button className="bg-zinc-600  mt-4 rounded-lg py-3 px-10 tracking-[.3em] font-bold">
+                DINEWEEKENDSALE
+              </button>
+            </div>
+          </div>
+          <div className="flex w-[50%] gap-x-3">
+            <div className=" bg-orange-100 pt-4 px-6 w-[300px]">
+              <h2 className="text-md ">Flex Sweatshirt</h2>
+              <div className=" flex gap-x-2 text-lg">
+                <del>$100.00</del>
+                <p className=" font-bold">$75.00</p>
+              </div>
+              <Image
+                src={'/event2.webp'}
+                className="mt-3"
+                width={3500}
+                height={350}
+                alt="event"
+              />
+            </div>
+            <div className=" bg-gray-300 pt-4 px-6 w-[300px]">
+              <h2 className="text-md ">Flex Sweatshirt</h2>
+              <div className=" flex gap-x-2 text-lg">
+                <del>$100.00</del>
+                <p className=" font-bold">$75.00</p>
+              </div>
+              <Image
+                src={'/event3.webp'}
+                className="mt-3"
+                width={320}
+                height={350}
+                alt="event"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      {/* products  */}
+      <div className="mt-10">
+        <p className="text-center text-blue-600 font-bold text-sm uppercase">
+          Promotions
+        </p>
+        <h2 className="text-4xl font-bold mt-3 text-center">
+          Check What We Have
+        </h2>
+        <div className="mt-5">
+          <ProductSlider data={productResp} />
+        </div>
       </div>
-    </main>
+      {/* service  */}
+      <div className="mt-[10rem]">
+        <div className="lg:max-w-[500px] ml-auto">
+          <h1 className="text-5xl font-bold">
+            Unique and Authentic Vintage Designer Jewellery
+          </h1>
+        </div>
+        <div className="flex mt-10 gap-x-4">
+          <div className="grid w-1/2 grid-cols-2 gap-x-6 relative">
+            <div className="absolute text-[6.6rem] leading-[110px] opacity-[0.07] text-[#212121] z-[1] font-bold">
+              Different from others
+            </div>
+            <div className="w-[70%] relative z-[2]">
+              <h3 className="text-xl font-bold">
+                Using Good Quality Materials
+              </h3>
+              <p className="mt-6">
+                Lorem ipsum dolor sit amt, consectetur adipiscing elit.
+              </p>
+            </div>
+            <div className="w-[70%] relative z-[2]">
+              <h3 className="text-xl font-bold">100% Handmade Products</h3>
+              <p className="mt-6">
+                {' '}
+                Lorem ipsum dolor sit amt, consectetur adipiscing elit.
+              </p>
+            </div>
+            <div className="w-[70%] relative z-[2]">
+              <h3 className="text-xl font-bold">Modern Fashion Design</h3>
+              <p className="mt-6">
+                Lorem ipsum dolor sit amt, consectetur adipiscing elit.
+              </p>
+            </div>
+            <div className="w-[70%] relative z-[2]">
+              <h3 className="text-xl font-bold">Discount for Bulk Orders</h3>
+              <p className="mt-6">
+                Lorem ipsum dolor sit amt, consectetur adipiscing elit.
+              </p>
+            </div>
+          </div>
+          <div className="w-1/2 flex gap-x-10">
+            <div className="w-1/2 bg-gray-100">
+              <Image src={'/event2.webp'} width={300} height={200} alt="logo" />
+            </div>
+            <div className="w-1/2">
+              <p className="leading-10 text-lg">
+                This piece is ethically crafted in our small family-owned
+                workshop in Peru with unmatched attention to detail and care.
+                The Natural color is the actual natural color of the fiber,
+                undyed and 100% traceable.
+              </p>
+              <button className="text-white font-bold bg-black rounded-lg py-3 px-10 mt-3">
+                See All Product
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* news letter  */}
+      <div className="my-[10rem] w-[500px] m-auto">
+        <div className="relative ">
+          <div className="absolute text-[7.5rem] opacity-[.07] z-1 font-bold -left-[4rem]">
+            Newsletter
+          </div>
+          <h2 className="text-center text-3xl font-bold">
+            Subscribe Our Newsletter
+          </h2>
+          <p className="my-10 text-center">
+            Get the latest information and promo offers directly
+          </p>
+
+          <div className="flex w-full max-w-lg items-center m-auto justify-center space-x-2 relative z-2">
+            <Input type="email" placeholder="Email" />
+            <button className="text-white min-w-[180px] font-bold bg-black rounded-lg py-3 px-10 ">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </Layout>
   )
 }
