@@ -55,7 +55,9 @@ export const POST = async (request: NextRequest) => {
       message: 'OK',
       status: 200,
     })
-  } catch (err) {}
+  } catch (err) {
+    return NextResponse.json({message:'request failed',status:500})
+  }
 }
 
 export const DELETE = async (request: NextRequest) => {
@@ -98,5 +100,20 @@ export const DELETE = async (request: NextRequest) => {
       message: `user and product id missing`,
       status: 404,
     })
+  }
+}
+
+export const PUT = async (request : NextRequest)=>{
+  let req = await request.json()
+
+  try{
+    let res = await db.update(cartTable).set({
+      quantity : req.quantity
+    }).where(and(eq(cartTable.product_id , req.product_id), eq(cartTable.user_id , req.user_id))).returning()
+    return NextResponse.json({result : res, status:200 , message :'Product has been updated'})
+
+  }catch(err){
+    return NextResponse.json({message:'request failed',status:500})
+
   }
 }
