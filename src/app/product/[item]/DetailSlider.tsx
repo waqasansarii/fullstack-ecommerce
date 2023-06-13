@@ -20,7 +20,7 @@ const DetailSlider = ({ product }: { product: Image[] }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
 
   return (
-    <div className="flex w-[60%] gap-x-4">
+    <div className="flex md:w-[60%]  w-full gap-x-4">
       <Swiper
         onSwiper={setThumbsSwiper}
         spaceBetween={10}
@@ -30,6 +30,17 @@ const DetailSlider = ({ product }: { product: Image[] }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="w-[130px] detailSlider"
         direction={'vertical'}
+        breakpoints={{
+          290:{
+          //  direction:'horizontal'
+           slidesPerView:3
+
+          },
+          600:{
+            slidesPerView:4
+            // direction:'vertical'
+          }
+        }}
       >
         {product.map((val: Image,i) => (
           <SwiperSlide key={i}>

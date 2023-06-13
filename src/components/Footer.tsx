@@ -5,9 +5,9 @@ import React from "react";
 const Footer = () => {
   return (
     <div>
-      <div className="flex ">
-        <div className="w-[40%]">
-          <div className="w-[320px]">
+      <div className="flex md:flex-row flex-col gap-x-3">
+        <div className="md:w-[40%] w-full ">
+          <div className="md:w-[320px]">
             <Image src={"/Logo.webp"} width={200} height={70} alt="logo" />
             <p className="mt-7 text-[#666] text-lg  ">
               Small, artisan label that offers a thoughtfully curated collection
@@ -76,7 +76,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="w-[20%] flex flex-col gap-y-4">
+        <div className="md:w-[20%] w-full flex flex-col gap-y-4 md:mt-0 mt-6">
           <h3 className="text-xl font-bold text-gray-600">Company</h3>
           <Link href={"/"} className="mt-2 text-[#666]">
             About Us
@@ -95,7 +95,7 @@ const Footer = () => {
             Contact Us
           </Link>
         </div>
-        <div className="w-[20%] flex flex-col gap-y-4">
+        <div className="md:w-[20%] w-full flex flex-col gap-y-4 md:mt-0 mt-6">
           <h3 className="text-xl font-bold text-gray-600">Support</h3>
           <Link href={"/"} className="mt-2 text-[#666]">
             Support Carrer
@@ -108,7 +108,7 @@ const Footer = () => {
             Quick Chat
           </Link>
         </div>
-        <div className="w-[20%] flex flex-col gap-y-4">
+        <div className="md:w-[20%] w-full flex flex-col gap-y-4 md:mt-0 mt-6">
           <h3 className="text-xl font-bold text-gray-600">Contact</h3>
           <Link href={"/"} className="mt-2 text-[#666]">
             Whatsapp
@@ -118,7 +118,7 @@ const Footer = () => {
           </Link>
         </div>
       </div>
-      <div className="flex items-center justify-between mt-[8rem]  border-t-2 pt-3">
+      <div className="flex items-center flex-wrap md:flex-nowrap gap-x-3 gap-y-4 md:justify-between justify-center mt-[8rem]  border-t-2 pt-3">
         <div>
           <p>Copyright © 2022 Dine Market</p>
         </div>

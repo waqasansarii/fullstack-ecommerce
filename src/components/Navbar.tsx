@@ -1,15 +1,59 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '/Logo.webp'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Sidebar } from './Sidebar'
-import {  SignedIn, SignedOut,SignInButton ,UserButton} from '@clerk/nextjs'
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  useAuth,
+  UserButton,
+} from '@clerk/nextjs'
+import { CartItem } from '@/lib/type'
+
+export const useGetProducts = () => {
+  let [items, setItems] = useState<CartItem[]>([])
+  let { userId, isSignedIn } = useAuth()
+  const products = async () => {
+    let resp = await fetch(`/api/cart?user_id=${userId}`, {
+      method: 'GET',
+    })
+    let { res }: { res: CartItem[] } = await resp.json()
+    setItems(res)
+  }
+  // console.log(items)
+
+  useEffect(() => {
+    if (isSignedIn) {
+      products()
+
+      // return ()=>{
+      //   setItems([])
+      // }
+    }
+  }, [userId])
+
+  return { items , products}
+}
 
 const Navbar = () => {
+  let [cartLength, setCartLength] = useState(0)
+  // let { userId, isSignedIn } = useAuth()
+
+  let {items} = useGetProducts()
+
+  // console.log('nvabar items',items)
+  useEffect(() => {
+    // console.log(items)
+     setCartLength(items.length)
+  }, [items])
+
   return (
-    <div className=" flex items-center justify-between lg:max-w-[1300px] w-full lg:p-10 p-7 m-auto ">
+    <>
+    <div className=" flex items-center justify-between lg:max-w-[1300px] w-full lg:p-10 sm:p-7 px-5 py-7 m-auto ">
       <div className="w-50% flex items-center gap-x-10">
         <Link href={'/'}>
           <Image src={'/Logo.webp'} width={120} height={50} alt="logo" />
@@ -44,18 +88,18 @@ const Navbar = () => {
             <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
           </svg>
         </div>
-        <SignedIn >
+        <SignedIn>
           {/* Mount the UserButton component */}
-          <UserButton afterSignOutUrl='/' />
+          <UserButton afterSignOutUrl="/" />
         </SignedIn>
         <SignedOut>
           {/* Signed out users get sign in button */}
-          <SignInButton mode='modal' />
+          <SignInButton mode="modal" />
         </SignedOut>
         {/* <SignInButton /> */}
         <Link href={'/cart'} className="bg-black p-3 rounded-lg">
           <div className="relative">
-            <p className="absolute -top-4 -right-1 text-white">0</p>
+            <p className="absolute -top-4 -right-1 text-white">{cartLength}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -77,6 +121,7 @@ const Navbar = () => {
         <Sidebar />
       </div>
     </div>
+    </>
   )
 }
 

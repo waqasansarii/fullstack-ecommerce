@@ -38,7 +38,7 @@ const Product = async ({
 
   return (
     <Layout>
-      <div className="grid grid-cols-4 gap-x-4 gap-y-10 justify-center mb-[10rem]">
+      <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 items-start gap-x-4 gap-y-10 justify-center mb-[10rem]">
         {data?.map((val: Products) => (
           <Card data={val} key={val._id} />
         ))}

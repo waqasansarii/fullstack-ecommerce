@@ -29,6 +29,20 @@ export default function ProductSlider({ data }: { data: Products[] }) {
           delay: 1500,
         }}
         className="mySwiper"
+        breakpoints={{
+          200: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          400: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          800: {
+            slidesPerView: 3,
+            spaceBetween: 50,
+          },
+        }}
       >
         {data?.map((val: Products) => (
           <SwiperSlide key={val._id}>

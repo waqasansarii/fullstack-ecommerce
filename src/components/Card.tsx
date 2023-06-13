@@ -7,7 +7,7 @@ import { Products } from "@/lib/type";
 const Card = ({data}:{data:Products}) => {
   // console.log(data)
   return (
-    <Link href={`/product/${data?._id}`}  className=" hover:scale-105 m-auto transition ease-in-out delay-150 duration-500">
+    <Link href={`/product/${data?._id}`}  className=" hover:scale-105 w-full h-full m-auto transition ease-in-out delay-150 duration-500">
       <div className=" w-full">
         <Image
           src={urlForImage(data.image[0]).url()}

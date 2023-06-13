@@ -29,7 +29,7 @@ const ProductDetail =async ({params:{item}}:{params:{item:string}}) => {
   let data:Products = await getSingleProduct(item)
   return (
     <Layout>
-      <div className="flex">
+      <div className="flex md:flex-row flex-col md:mb-0 mb-[4rem]">
         <DetailSlider product={data.image} />
         <DetailItem data={data} />
         {/* <div className="w-[40%] p-4">

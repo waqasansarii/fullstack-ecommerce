@@ -3,8 +3,10 @@ import React, { useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { toast } from 'react-hot-toast'
 import { urlForImage } from '../../../../sanity/lib/image'
+import { useGetProducts } from '@/components/Navbar'
 
 const DetailItem = ({ data }: any) => {
+  let {products} = useGetProducts()
   const { userId, isSignedIn } = useAuth()
   let [loading, setLoading] = useState(false)
   const [qty, setQty] = useState(1)
@@ -27,15 +29,16 @@ const DetailItem = ({ data }: any) => {
       })
       let resJson = await res.json()
       setLoading(false)
+      products()
       toast.success('Item added in your cart successfully!')
-      console.log(resJson)
+      // console.log(resJson)
     } else {
       toast.error('Please login!')
     }
   }
 
   return (
-    <div className="w-[40%] p-4">
+    <div className="md:w-[40%] w-full p-4">
       <h2 className="text-3xl font-bold">{data?.title}</h2>
       <p className="font-bold text-gray-400">
         {data?.subCategory?.suitcategory}

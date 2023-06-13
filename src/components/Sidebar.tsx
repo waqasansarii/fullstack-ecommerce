@@ -47,18 +47,26 @@ export function Sidebar() {
             <Image src={'/Logo.webp'} alt="logo" height={50} width={100} />
           </SheetHeader>
           <div className="flex w-full flex-col gap-y-7 items-center justify-center mt-6">
-            <Link href={'/'} className="flex w-full text-center">
-              Male
-            </Link>
-            <Link href={'/'} className="flex w-full text-center">
-              Female
-            </Link>
-            <Link href={'/'} className="flex w-full text-center">
-              Kids
-            </Link>
-            <Link href={'/'} className="flex w-full text-center">
-              All Products
-            </Link>
+            <SheetClose asChild>
+              <Link href={'/Male'} className="flex w-full text-center">
+                Male
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              <Link href={'/Female'} className="flex w-full text-center">
+                Female
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              <Link href={'/Kids'} className="flex w-full text-center">
+                Kids
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              <Link href={'/all-products'} className="flex w-full text-center">
+                All Products
+              </Link>
+            </SheetClose>
           </div>
           <SheetFooter>
             <SheetClose asChild></SheetClose>

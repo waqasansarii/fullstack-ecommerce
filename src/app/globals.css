@@ -170,3 +170,15 @@ body {
   height: 100%;
   object-fit: cover;
 }
+
+
+@media(max-width:600px){
+  .detailSlider{
+    height: 300px;
+  }
+}
+@media(max-width:420px){
+  .detailSlider{
+    height: 250px;
+  }
+}
