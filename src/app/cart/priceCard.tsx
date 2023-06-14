@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import React, { useState } from 'react'
 
 const PriceCard = ({ data }: { data: CartItem[] }) => {
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   let countQty = data.reduce((acc: number, val: CartItem) => {
     // console.log(acc,val)
     let qty = acc + val.quantity
@@ -17,39 +17,41 @@ const PriceCard = ({ data }: { data: CartItem[] }) => {
     return totalPrice
   }, 0)
 
-
   const publishableKey = process.env
-  .NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
-const stripePromise = loadStripe(publishableKey);
+    .NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+  const stripePromise = loadStripe(publishableKey)
 
-const createCheckOutSession = async () => {
-  setLoading(true);
-  const stripe = await stripePromise;
+  const createCheckOutSession = async () => {
+    setLoading(true)
+    const stripe = await stripePromise
 
-  const checkoutSession = await fetch(
-    "http://localhost:3000/api/create-stripe-session",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const checkoutSession = await fetch(
+      '/api/create-stripe-session',
+      {
+        method: 'POST',
+        // item : data,
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // },
+        body: JSON.stringify({
+          item: data,
+        }),
       },
-      body: JSON.stringify({
-        item: data,
-      }),
+    )
+
+    console.log('Result------------- in prod page==========', checkoutSession)
+
+    const sessionID = await checkoutSession.json()
+
+    const result = await stripe?.redirectToCheckout({
+      sessionId: sessionID,
+    })
+    console.log(result)
+    if (result?.error) {
+      alert(result.error.message)
     }
-  );
-
-    console.log("Result------------- in prod page==========",  checkoutSession);
-
-  const sessionID= await checkoutSession.json();
-  const result = await stripe?.redirectToCheckout({
-    sessionId: sessionID,
-  });
-  if (result?.error) {
-    alert(result.error.message);
+    setLoading(false)
   }
-  setLoading(false);
-};
 
   return (
     <div className="lg:w-[30%] w-full p-5 rounded-md bg-blue-100/50">
@@ -62,7 +64,10 @@ const createCheckOutSession = async () => {
         <h5 className="text-md font-bold">Total</h5>
         <p>${countPrice}</p>
       </div>
-      <button onClick={createCheckOutSession} className="bg-black py-2 px-5 rounded-lg w-full mt-3 text-white">
+      <button
+        onClick={createCheckOutSession}
+        className="bg-black py-2 px-5 rounded-lg w-full mt-3 text-white"
+      >
         Process to checkout
       </button>
     </div>

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import logo from '/Logo.webp'
+// import logo from '/Logo.webp'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
@@ -29,31 +29,19 @@ export const useGetProducts = () => {
   useEffect(() => {
     if (isSignedIn) {
       products()
-
-      // return ()=>{
-      //   setItems([])
-      // }
     }
   }, [userId])
 
   return { items , products}
 }
 
-const Navbar = () => {
-  let [cartLength, setCartLength] = useState(0)
-  // let { userId, isSignedIn } = useAuth()
+const Navbar = ({itemNum}: {itemNum?:number| undefined}) => {
 
   let {items} = useGetProducts()
 
-  // console.log('nvabar items',items)
-  useEffect(() => {
-    // console.log(items)
-     setCartLength(items.length)
-  }, [items])
-
   return (
     <>
-    <div className=" flex items-center justify-between lg:max-w-[1300px] w-full lg:p-10 sm:p-7 px-5 py-7 m-auto ">
+    <div className=" flex items-center justify-between lg:max-w-[1300px] w-full lg:py-10 sm:py-7  py-7 m-auto ">
       <div className="w-50% flex items-center gap-x-10">
         <Link href={'/'}>
           <Image src={'/Logo.webp'} width={120} height={50} alt="logo" />
@@ -99,7 +87,7 @@ const Navbar = () => {
         {/* <SignInButton /> */}
         <Link href={'/cart'} className="bg-black p-3 rounded-lg">
           <div className="relative">
-            <p className="absolute -top-4 -right-1 text-white">{cartLength}</p>
+            <p className="absolute -top-4 -right-1 text-white">{!itemNum? items?.length: itemNum}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

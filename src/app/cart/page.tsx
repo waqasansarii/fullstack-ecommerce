@@ -53,7 +53,7 @@ const Cart = () => {
   //   return <div>loading...</div>
   // }
   return (
-    <Layout>
+    <Layout cartNo={items?.length}>
       <div className="text-3xl font-bold">Shopping Cart</div>
       <div className="flex items-start gap-x-4 lg:flex-row flex-col gap-y-5 justify-between mt-8">
         {loading ? (

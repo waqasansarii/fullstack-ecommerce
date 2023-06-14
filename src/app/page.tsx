@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar'
+import Navbar, { useGetProducts } from '@/components/Navbar'
 import ProductSlider from '@/components/ProductSlider'
 import Image from 'next/image'
 // import { Button } from "@/components/ui/button"
@@ -32,7 +32,7 @@ export default async function Home() {
   let productResp = await getProductData()
 
   return (
-    <Layout>
+    <Layout >
       {/* <Navbar /> */}
       {/* hero section  */}
       <div className="flex items-center justify-center gap-x-10">
