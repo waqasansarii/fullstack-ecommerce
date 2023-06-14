@@ -10,7 +10,7 @@ import { useGetProducts } from '@/components/Navbar'
 import { Skeleton } from '@/components/ui/skeleton'
 import {toast} from 'react-hot-toast'
 
-const page = () => {
+const Cart = () => {
   const { userId, isSignedIn } = useAuth()
   let { items, products } = useGetProducts()
   let [cartItems, setCartItems] = useState<CartItem[]>([])
@@ -81,4 +81,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Cart
