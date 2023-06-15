@@ -57,8 +57,8 @@ export async function POST(req: NextRequest) {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: 'http://localhost:3000' + '/payment/success',
-      cancel_url: 'http://localhost:3000' + '/payment/fail',
+      success_url: 'https://fullstack-ecommerce-one.vercel.app/' + '/payment/success',
+      cancel_url: 'https://fullstack-ecommerce-one.vercel.app/' + '/payment/fail',
     })
 
        console.log("response-------------------",await session);

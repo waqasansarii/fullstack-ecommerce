@@ -3,6 +3,9 @@ import Link from "next/link";
 import React from "react";
 
 const Succes = () => {
+
+  
+
   return (
     <Layout>
       <div className="h-min-full flex items-center flex-col m-auto w-full">

@@ -25,23 +25,23 @@ const PriceCard = ({ data }: { data: CartItem[] }) => {
     setLoading(true)
     const stripe = await stripePromise
 
-    const checkoutSession = await fetch(
-      '/api/create-stripe-session',
-      {
-        method: 'POST',
-        // item : data,
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
-        body: JSON.stringify({
-          item: data,
-        }),
-      },
-    )
+    const checkoutSession = await fetch('/api/create-stripe-session', {
+      method: 'POST',
+      // item : data,
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // },
+      body: JSON.stringify({
+        item: data,
+      }),
+    })
 
     console.log('Result------------- in prod page==========', checkoutSession)
 
     const sessionID = await checkoutSession.json()
+    const deletingProducts = await fetch('/api/cart',{
+      method:'DELETE'
+    })
 
     const result = await stripe?.redirectToCheckout({
       sessionId: sessionID,
@@ -65,10 +65,11 @@ const PriceCard = ({ data }: { data: CartItem[] }) => {
         <p>${countPrice}</p>
       </div>
       <button
+        disabled={loading}
         onClick={createCheckOutSession}
         className="bg-black py-2 px-5 rounded-lg w-full mt-3 text-white"
       >
-        Process to checkout
+        {loading ? 'Processing' : 'Process to checkout'}
       </button>
     </div>
   )
