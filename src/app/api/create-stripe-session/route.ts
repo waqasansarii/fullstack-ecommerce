@@ -49,16 +49,16 @@ export async function POST(req: NextRequest) {
  };
 //  console.log('local data',transformedItem)
   const redirectURL =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : 'your deployed url'
+    // process.env.NODE_ENV === 'development'
+       'http://localhost:3000'
+      //  'https://fullstack-ecommerce-one.vercel.app/'
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: 'https://fullstack-ecommerce-one.vercel.app/' + '/payment/success',
-      cancel_url: 'https://fullstack-ecommerce-one.vercel.app/' + '/payment/fail',
+      success_url: redirectURL + '/payment/success',
+      cancel_url: redirectURL + '/payment/fail',
     })
 
        console.log("response-------------------",await session);

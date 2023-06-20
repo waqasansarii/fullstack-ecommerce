@@ -1,4 +1,4 @@
-import Navbar, { useGetProducts } from '@/components/Navbar'
+// import Navbar from '@/components/Navbar'
 import ProductSlider from '@/components/ProductSlider'
 import Image from 'next/image'
 // import { Button } from "@/components/ui/button"

@@ -3,32 +3,31 @@ import { NextRequest, NextResponse } from 'next/server'
 import { v4 as uuid } from 'uuid'
 import { cookies } from 'next//headers'
 import { eq, and } from 'drizzle-orm'
+// import { auth } from '@clerk/nextjs'
 
 export const GET = async (request: NextRequest) => {
+  // const {userId, getToken} = auth();
+  // console.log(userId)
   let req = request.nextUrl.searchParams
 
-  if (req.has('user_id')) {
-    let user = req.get('user_id')
-    try {
-
-      // getting current user cart items 
-      let res = await db
-        .select()
-        .from(cartTable)
-        .where(eq(cartTable.user_id, `${user}`))
-      // .where(eq(cartTable.user_id,req.user_id));
-      return NextResponse.json({ res, status: 200, message: 'OK' })
-    } catch (err) {
-      return NextResponse.json({ message: `error ${err}`, status: 500 })
-    }
-  } else {
-    return NextResponse.json({ message: `user id missing`, status: 404 })
+  // if (req.has('user_id')) {
+  let user = req.get('user_id')
+  try {
+    // getting current user cart items
+    let res = await db.select().from(cartTable)
+    // .where(eq(cartTable.user_id, `${user}`))
+    // .where(eq(cartTable.user_id,req.user_id));
+    return NextResponse.json({ res, status: 200, message: 'OK' })
+  } catch (err) {
+    return NextResponse.json({ message: `error ${err}`, status: 500 })
   }
+  // } else {
+  //   return NextResponse.json({ message: `user id missing`, status: 404 })
+  // }
 }
 
 export const POST = async (request: NextRequest) => {
   let res = await request.json()
-  
 
   try {
     let pushData = await db
@@ -56,19 +55,19 @@ export const POST = async (request: NextRequest) => {
       status: 200,
     })
   } catch (err) {
-    return NextResponse.json({message:'request failed',status:500})
+    return NextResponse.json({ message: 'request failed', status: 500 })
   }
 }
 
 export const DELETE = async (request: NextRequest) => {
   let req = request.nextUrl.searchParams
 
-  // checking params in url 
+  // checking params in url
   if (req.has('user_id') && req.has('product_id')) {
     let user = req.get('user_id')
     let product = req.get('product_id')
     try {
-      // deleting product 
+      // deleting product
       let response = await db
         .delete(cartTable)
         .where(
@@ -78,7 +77,7 @@ export const DELETE = async (request: NextRequest) => {
           ),
         )
         .returning()
-        // get all remaining product after deleted  
+      // get all remaining product after deleted
       let currentUserProducts = await db
         .select()
         .from(cartTable)
@@ -88,7 +87,7 @@ export const DELETE = async (request: NextRequest) => {
         deletedItem: response,
         remainingItem: currentUserProducts,
         status: 200,
-        message:'Product has been deleted!'
+        message: 'Product has been deleted!',
       })
     } catch (err) {
       return NextResponse.json({
@@ -103,17 +102,33 @@ export const DELETE = async (request: NextRequest) => {
   }
 }
 
-export const PUT = async (request : NextRequest)=>{
+export const PUT = async (request: NextRequest) => {
   let req = await request.json()
 
-  try{
-    let res = await db.update(cartTable).set({
-      quantity : req.quantity
-    }).where(and(eq(cartTable.product_id , req.product_id), eq(cartTable.user_id , req.user_id))).returning()
-    return NextResponse.json({result : res, status:200 , message :'Product has been updated'})
-
-  }catch(err){
-    return NextResponse.json({message:'request failed',status:500})
-
+  try {
+    let res = await db
+      .update(cartTable)
+      .set({
+        quantity: req.quantity,
+      })
+      .where(
+        and(
+          eq(cartTable.product_id, req.product_id),
+          eq(cartTable.user_id, req.user_id),
+        ),
+      )
+      .returning()
+    let currentUserProducts = await db
+      .select()
+      .from(cartTable)
+      .where(eq(cartTable.user_id, req.user_id))
+    return NextResponse.json({
+      result: res,
+      status: 200,
+      message: 'Product has been updated',
+      allProducts: currentUserProducts,
+    })
+  } catch (err) {
+    return NextResponse.json({ message: 'request failed', status: 500 })
   }
 }

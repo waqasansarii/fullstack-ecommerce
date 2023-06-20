@@ -1,62 +1,74 @@
 'use client'
 import React, { useState } from 'react'
+import { Products } from '@/lib/type'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { useAuth } from '@clerk/nextjs'
-import { toast } from 'react-hot-toast'
+import {toast} from 'react-hot-toast'
 import { urlForImage } from '../../../../sanity/lib/image'
-import { useGetProducts } from '@/components/Navbar'
-import { CartItem, Products } from '@/lib/type'
+import { addItem } from '@/store/slice'
 
-const DetailItem = ({ data,handleAddToCart,loading }: { data: Products,handleAddToCart:any ,loading:boolean}) => {
-  let { products, items } = useGetProducts()
-  // const { userId, isSignedIn } = useAuth()
-  // let [loading, setLoading] = useState(false)
+const DetailItem = ({
+  data,
+  // handleAddToCart,
+  // loading,
+}: {
+  data: Products
+  // handleAddToCart: any
+  // loading: boolean
+}) => {
+  const {userId,isSignedIn} = useAuth()
+  const [loading , setLoading] = useState(false)
   const [qty, setQty] = useState(1)
-  // // console.log(userId)
+  const dispatch = useAppDispatch()
+  const selector = useAppSelector((state)=>{
+    return state.storeSlice
+  })
 
-  // const handleAddToCart = async () => {
-  //   let isItemExist = items.filter(
-  //     (item) => item.product_id === data._id && item.user_id && userId,
-  //   )
-  //   // console.log(isItemExist)
-  //   if (isSignedIn) {
-  //     setLoading(true)
-  //     if (isItemExist.length > 0) {
-  //       let res = await fetch('/api/cart', {
-  //         method: 'PUT',
-  //         body: JSON.stringify({
-  //           product_id: data._id,
-  //           quantity: isItemExist[0].quantity + qty,
-  //           user_id: userId,
-  //         }),
-  //       })
-  //       let resJson = await res.json()
-  //       // console.log(resJson)
-  //       setLoading(false)
-  //       products()
-  //       toast.success('Item updated in your cart successfully!')
-  //     } else {
-  //       let res = await fetch('/api/cart', {
-  //         method: 'POST',
-  //         body: JSON.stringify({
-  //           product_id: data._id,
-  //           quantity: qty,
-  //           user_id: userId,
-  //           product_category: data?.subCategory?.suitcategory,
-  //           product_image: urlForImage(data.image[0]).url(),
-  //           product_name: data.title,
-  //           price: data?.price,
-  //         }),
-  //       })
-  //       let resJson = await res.json()
-  //       setLoading(false)
-  //       products()
-  //       toast.success('Item added in your cart successfully!')
-  //       // console.log(resJson)
-  //     }
-  //   } else {
-  //     toast.error('Please login!')
-  //   }
-  // }
+  const handleAddToCart = async () => {
+    let isItemExist = selector.cartItems.filter(
+      (item) => item.product_id === data._id && item.user_id && userId,
+    )
+    // console.log(isItemExist)
+    if (isSignedIn) {
+      setLoading(true)
+      if (isItemExist.length > 0) {
+        let res = await fetch('/api/cart', {
+          method: 'PUT',
+          body: JSON.stringify({
+            product_id: data._id,
+            quantity: isItemExist[0].quantity + qty,
+            user_id: userId,
+          }),
+        })
+        let resJson = await res.json()
+        console.log('update',resJson)
+        dispatch(addItem(resJson.allProducts))
+
+        setLoading(false)
+        toast.success('Item updated in your cart successfully!')
+      } else {
+        let res = await fetch('/api/cart', {
+          method: 'POST',
+          body: JSON.stringify({
+            product_id: data._id,
+            quantity: qty,
+            user_id: userId,
+            product_category: data?.subCategory?.suitcategory,
+            product_image: urlForImage(data.image[0]).url(),
+            product_name: data.title,
+            price: data?.price,
+          }),
+        })
+        let resJson = await res.json()
+        dispatch(addItem(resJson.allProducts))
+        setLoading(false)
+        toast.success('Item added in your cart successfully!')
+        console.log('new added',resJson)
+      }
+    } else {
+      toast.error('Please login!')
+    }
+  }
 
   return (
     <div className="md:w-[40%] w-full p-4">
@@ -107,7 +119,7 @@ const DetailItem = ({ data,handleAddToCart,loading }: { data: Products,handleAdd
       <div className="flex items-center gap-x-3 mt-12">
         <button
           className="flex items-center gap-x-2 bg-black py-3 px-6 rounded-md text-white"
-          onClick={()=>handleAddToCart(data,qty)}
+          onClick={ handleAddToCart}
           disabled={loading}
         >
           <svg
