@@ -53,8 +53,8 @@ export async function POST(req: NextRequest) {
 //  console.log('local data',transformedItem)
   const redirectURL =
     // process.env.NODE_ENV === 'development'
-       'http://localhost:3000'
-      //  'https://fullstack-ecommerce-one.vercel.app/'
+      //  'http://localhost:3000'
+       'https://fullstack-ecommerce-one.vercel.app/'
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
