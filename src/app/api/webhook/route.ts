@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cartTable, db } from '@/lib/drizzle'
 import { eq, and ,inArray} from 'drizzle-orm'
 import Stripe from 'stripe'
+import { stripeRes } from '@/lib/type'
+// import {} from 'stripe/types/WebhookEndpoints'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2022-11-15',
@@ -19,8 +21,8 @@ export async function POST(req: NextRequest, res: any) {
 
     console.log(event)
 
-    if ('checkout.session.completed' === event.type) {
-      const session = event.data.object
+    if (event.type==='checkout.session.completed') {
+      const session:any = event.data.object
 
       console.log('payment success-----------------------', session)
       let convertObject = Object.values(session?.metadata).map((val) =>
@@ -28,10 +30,10 @@ export async function POST(req: NextRequest, res: any) {
       )
       console.log('converting', convertObject)
 
-      const line_Items = await stripe.checkout.sessions.listLineItems(
-        event.data.object.id,
-      )
-      console.log('Line Items==========================', line_Items)
+      // const line_Items = await stripe.checkout.sessions.listLineItems(
+      //   event.data.object.id,
+      // )
+      // console.log('Line Items==========================', line_Items)
 
       //Once you'll get data you can use it according to your
       //reqirement for making update in DB
