@@ -33,7 +33,8 @@ const Navbar = () => {
       let filterUserProduct = selector.cartItems?.filter(
         (item) => item.user_id === userId,
       )
-      setItems(filterUserProduct.length)
+      console.log(filterUserProduct)
+      setItems(filterUserProduct?.length)
     } else {
       setItems(0)
     }

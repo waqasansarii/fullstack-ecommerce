@@ -40,21 +40,21 @@ const PriceCard = ({ data }: { data: CartItem[] }) => {
         }),
       })
 
-      console.log('Result------------- in prod page==========', checkoutSession)
+      // console.log('Result------------- in prod page==========', checkoutSession)
 
       const sessionID = await checkoutSession.json()
-      const deletingProducts = await fetch('/api/cart', {
-        method: 'DELETE',
-      })
+      // const deletingProducts = await fetch('/api/cart', {
+      //   method: 'DELETE',
+      // })
 
+      // console.log(sessionID)
+      setLoading(false)
       const result = await stripe?.redirectToCheckout({
         sessionId: sessionID,
       })
-      console.log(result)
       if (result?.error) {
         alert(result.error.message)
       }
-      setLoading(false)
     }else{
       toast.error('Please login to proceed.')
     }
@@ -78,7 +78,7 @@ const PriceCard = ({ data }: { data: CartItem[] }) => {
             onClick={createCheckOutSession}
             className="bg-black py-2 px-5 rounded-lg w-full mt-3 text-white"
           >
-            {loading ? 'Processing' : 'Process to checkout'}
+            {loading ? 'Processing...' : 'Process to checkout'}
           </button>
         </div>
       ) : null}

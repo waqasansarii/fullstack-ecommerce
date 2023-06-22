@@ -23,16 +23,17 @@ const DetailItem = ({
   const selector = useAppSelector((state)=>{
     return state.storeSlice
   })
+  // console.log(selector.cartItems)
 
   const handleAddToCart = async () => {
     let isItemExist = selector.cartItems.filter(
-      (item) => item.product_id === data._id && item.user_id && userId,
+      (item) => item.product_id === data._id && item.user_id === userId,
     )
-    // console.log(isItemExist)
+    console.log(isItemExist)
     if (isSignedIn) {
       setLoading(true)
       if (isItemExist.length > 0) {
-        let res = await fetch('/api/cart', {
+        let res = await fetch('/api/cart/', {
           method: 'PUT',
           body: JSON.stringify({
             product_id: data._id,
@@ -47,7 +48,7 @@ const DetailItem = ({
         setLoading(false)
         toast.success('Item updated in your cart successfully!')
       } else {
-        let res = await fetch('/api/cart', {
+        let res = await fetch('/api/cart/', {
           method: 'POST',
           body: JSON.stringify({
             product_id: data._id,

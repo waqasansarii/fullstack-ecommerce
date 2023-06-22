@@ -34,13 +34,24 @@ const CartList = ({
       `/api/cart?user_id=${userId}&&product_id=${val.product_id}`,
       {
         method: 'DELETE',
+        
       },
+      
     )
     let resJson = await resp.json()
     toast(resJson.message)
     dispatch(deleteItem(resJson.remainingItem))
     setLoading(false)
   }
+
+  // const handleAllDelete = async()=>{
+  //   let id = data.map((res)=> res.id)
+  //   //  console.log(id)
+  //   let dlt = await fetch(`/api/buyItems?id=${id}`,{
+  //     method:'DELETE',
+  //   })
+  //   console.log(await dlt.json())
+  // } 
 
   return (
     <>

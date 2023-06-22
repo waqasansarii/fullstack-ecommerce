@@ -12,6 +12,9 @@ const stripe = new Stripe(
 
 export async function POST(req: NextRequest) {
   const { item } = await req.json()
+  
+  let itemId = item.map((val:CartItem)=> val.id)
+
   const lineItems = item.map((it: CartItem) => {
     return {
       price_data: {
@@ -21,7 +24,7 @@ export async function POST(req: NextRequest) {
           // category: it.product_category,
           description: 'description',
           images: [it.product_image],
-          metadata: { productId: it.product_id },
+          metadata: { productId: it.product_id ,id : it.id},
         },
         unit_amount: it.price * 100,
       },
@@ -30,23 +33,23 @@ export async function POST(req: NextRequest) {
   })
   // console.log(lineItems)
   // const transformedItem = {}
-  const transformedItem = {
-    price_data: {
-     currency: 'usd',
-     product_data:{
-       name: 'abc',
-       description: 'description',
-       images:['url'],
-       metadata:{name:"some additional info",
-                task:"Usm created a task"},
+//   const transformedItem = {
+//     price_data: {
+//      currency: 'usd',
+//      product_data:{
+//        name: 'abc',
+//        description: 'description',
+//        images:['url'],
+//        metadata:{name:"some additional info",
+//                 task:"Usm created a task"},
 
-     },
-     unit_amount: 300 * 100,
+//      },
+//      unit_amount: 300 * 100,
 
-   },
-   quantity: 3,
+//    },
+//    quantity: 3,
    
- };
+//  };
 //  console.log('local data',transformedItem)
   const redirectURL =
     // process.env.NODE_ENV === 'development'
@@ -59,6 +62,13 @@ export async function POST(req: NextRequest) {
       mode: 'payment',
       success_url: redirectURL + '/payment/success',
       cancel_url: redirectURL + '/payment/fail',
+      metadata:itemId,
+      // expand: item,
+
+      //  description:itemId
+      // lineItems
+      
+      
     })
 
        console.log("response-------------------",await session);

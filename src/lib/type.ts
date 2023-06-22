@@ -24,3 +24,4 @@ export type CartItem = {
   quantity: number;
   user_id: string;
 };
+
