@@ -28,7 +28,7 @@ const Cart = () => {
   }, [userId, selector.cartItems])
 
   if (!isLoaded) {
-    return <div>loading...</div>
+    return <div className='text-center w-full mt-5 text-3xl font-bold'>loading...</div>
   }
   // console.log(isSignedIn)
 
