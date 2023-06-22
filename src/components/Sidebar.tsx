@@ -18,10 +18,10 @@ const SHEET_SIZES = ['sm', 'default', 'lg', 'xl', 'full', 'content'] as const
 type SheetSize = typeof SHEET_SIZES[number]
 
 export function Sidebar() {
-  const [size, setSize] = useState<SheetSize>('default')
+  // const [size, setSize] = useState<SheetSize>('default')
   return (
     <div className="flex lg:hidden flex-col space-y-8 ">
-      <Sheet>
+      <Sheet >
         <SheetTrigger asChild>
           <button>
             <svg
@@ -42,28 +42,28 @@ export function Sidebar() {
             </svg>
           </button>
         </SheetTrigger>
-        <SheetContent position="left" size={size}>
+        <SheetContent position="left" size={'full'}>
           <SheetHeader>
             <Image src={'/Logo.webp'} alt="logo" height={50} width={100} />
           </SheetHeader>
           <div className="flex w-full flex-col gap-y-7 items-center justify-center mt-6">
             <SheetClose asChild>
-              <Link href={'/Male'} className="flex w-full text-center">
+              <Link href={'/Male'} className="flex w-full text-center justify-center">
                 Male
               </Link>
             </SheetClose>
             <SheetClose asChild>
-              <Link href={'/Female'} className="flex w-full text-center">
+              <Link href={'/Female'} className="flex w-full text-center justify-center">
                 Female
               </Link>
             </SheetClose>
             <SheetClose asChild>
-              <Link href={'/Kids'} className="flex w-full text-center">
+              <Link href={'/Kids'} className="flex w-full text-center justify-center">
                 Kids
               </Link>
             </SheetClose>
             <SheetClose asChild>
-              <Link href={'/all-products'} className="flex w-full text-center">
+              <Link href={'/all-products'} className="flex w-full text-center justify-center">
                 All Products
               </Link>
             </SheetClose>

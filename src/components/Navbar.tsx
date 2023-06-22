@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="max-w-[1300px] m-auto flex items-center justify-between lg:max-w-[1300px] w-full lg:p-10 sm:p-7  p-7  m-auto ">
+      <div className="max-w-[1300px] m-auto flex items-center justify-between lg:max-w-[1300px] w-full lg:p-10 sm:p-7  py-7 px-4  m-auto ">
         <div className="w-50% flex items-center gap-x-10">
           <Link href={'/'}>
             <Image src={'/Logo.webp'} width={120} height={50} alt="logo" />
