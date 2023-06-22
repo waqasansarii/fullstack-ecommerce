@@ -21,7 +21,7 @@ export async function POST(req: NextRequest, res: any) {
 
     console.log(event)
 
-    if (event.type==='checkout.session.completed') {
+    if (event.type=='checkout.session.completed') {
       const session:any = event.data.object
 
       console.log('payment success-----------------------', session)
